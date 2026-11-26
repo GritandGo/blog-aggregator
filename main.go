@@ -27,5 +27,22 @@ func main() {
 
 	commandRegistry.register("login", handlerLogin)
 
-	_ = s
+
+	userInput := os.Args
+	if len(userInput) < 2 {
+		fmt.Fprintln(os.Stderr, "Please enter a command after program name")
+		os.Exit(1)
+	}
+
+	c := command{
+		name: userInput[1],
+		args: userInput[2:],
+	}
+
+	err = commandRegistry.run(&s, c)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
 }
